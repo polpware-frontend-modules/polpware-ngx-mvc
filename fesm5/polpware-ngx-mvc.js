@@ -1,26 +1,26 @@
+import { __extends, __spread, __assign } from 'tslib';
+import { NgStoreListMediator, WritableListMediator, RxjsPoweredWritableListMediator } from '@polpware/fe-mvc';
 import { CollectionStore } from '@polpware/fe-data';
 import { underscore } from '@polpware/fe-dependencies';
-import { __extends, __assign, __spread } from 'tslib';
 import { pushArray } from '@polpware/fe-utilities';
-import { NgStoreListMediator, WritableListMediator, RxjsPoweredWritableListMediator } from '@polpware/fe-mvc';
 import { InjectionToken } from '@angular/core';
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @fileOverview
+ * This abstract class defines a base class for implementing
+ * a page with such features as refreshing, loading more, and
+ * listening to changes from a global database and inserting
+ * or deleting elements accordingly.
+ *
+ * This class does not depend on any features that a specific
+ * platform may provide, such as ionViewDidload and ...unload.
+ *
+ * @name PlatformAgosticFullFeatureListPage.ts
+ * @author Xiaolong Tang <xxlongtang@gmail.com>
+ * @license Copyright @me
  */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * @abstract
- */
-var  /**
- * @abstract
- */
-PlatformObliviousListPage = /** @class */ (function () {
+var _ = underscore;
+var PlatformObliviousListPage = /** @class */ (function () {
     function PlatformObliviousListPage() {
         this.moreDataCanBeLoaded = false;
         this.callbacks = {
@@ -28,53 +28,22 @@ PlatformObliviousListPage = /** @class */ (function () {
             onInfinite: null
         };
     }
-    /**
-     * @protected
-     * @param {?} fromCache
-     * @param {...?} rest
-     * @return {?}
-     */
-    PlatformObliviousListPage.prototype.turnOnMediator = /**
-     * @protected
-     * @param {?} fromCache
-     * @param {...?} rest
-     * @return {?}
-     */
-    function (fromCache) {
+    PlatformObliviousListPage.prototype.turnOnMediator = function (fromCache) {
         var rest = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             rest[_i - 1] = arguments[_i];
         }
-        /** @type {?} */
         var viewInstance = this.buildViewInstance();
         this.listMediator.startService(viewInstance, fromCache);
     };
-    /**
-     * @protected
-     * @return {?}
-     */
-    PlatformObliviousListPage.prototype.turnOffMediator = /**
-     * @protected
-     * @return {?}
-     */
-    function () {
+    PlatformObliviousListPage.prototype.turnOffMediator = function () {
         this.listMediator.stopService();
     };
     return PlatformObliviousListPage;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/** @type {?} */
 var _$1 = underscore;
-/** @type {?} */
 var noop = _$1.noop;
-/**
- * @param {?} context
- * @return {?}
- */
 function adaptAngularToController(context) {
     return {
         $data: {
@@ -171,10 +140,12 @@ function adaptAngularToController(context) {
         $navBar: {
             /**
              * Get current state
+             * @returns {}
              */
             getState: noop,
             /**
              * Set state
+             * @param {Boolean} s
              */
             setState: noop
         },
@@ -233,30 +204,12 @@ function adaptAngularToController(context) {
     };
 }
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * @abstract
- */
-var  /**
- * @abstract
- */
-FullFeatureListPage = /** @class */ (function (_super) {
+var FullFeatureListPage = /** @class */ (function (_super) {
     __extends(FullFeatureListPage, _super);
     function FullFeatureListPage() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    /**
-     * @param {...?} args
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.onDocumentReady = /**
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.onDocumentReady = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -264,15 +217,7 @@ FullFeatureListPage = /** @class */ (function (_super) {
         // Cache will be provided in its derived class
         this.ensureDataProvider.apply(this, __spread(args));
     };
-    /**
-     * @param {...?} args
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.onDocumentDestroy = /**
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.onDocumentDestroy = function () {
         // Cache will be provided in its derived class
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -282,20 +227,7 @@ FullFeatureListPage = /** @class */ (function (_super) {
         this.afterMediatorOff();
     };
     // May be not needed. 
-    // May be not needed. 
-    /**
-     * @protected
-     * @param {?} dataProvider
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.onDataProviderReady = 
-    // May be not needed. 
-    /**
-     * @protected
-     * @param {?} dataProvider
-     * @return {?}
-     */
-    function (dataProvider) {
+    FullFeatureListPage.prototype.onDataProviderReady = function (dataProvider) {
         var _this = this;
         this.buildMediator(dataProvider).then(function () {
             _this.turnOnMediator(false);
@@ -303,134 +235,55 @@ FullFeatureListPage = /** @class */ (function (_super) {
         });
     };
     // Override
-    // Override
-    /**
-     * @protected
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.buildViewInstance = 
-    // Override
-    /**
-     * @protected
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.buildViewInstance = function () {
         return adaptAngularToController({
             $scope: this
         });
     };
-    /**
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.doRefresh = /**
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.doRefresh = function () {
         // Trigger refresh
         if (this.callbacks.onRefresh) {
             this.callbacks.onRefresh();
         }
     };
-    /**
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.doInfinite = /**
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.doInfinite = function () {
         // Trigger loading more
         if (this.callbacks.onInfinite) {
             this.callbacks.onInfinite();
         }
     };
-    /**
-     * @param {...?} args
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.showLoadingIndicator = /**
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.showLoadingIndicator = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
     };
-    /**
-     * @param {...?} args
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.hideLoadingIndicator = /**
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.hideLoadingIndicator = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
     };
-    /**
-     * @param {?} seconds
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.setLoadingIndicatorDelay = /**
-     * @param {?} seconds
-     * @return {?}
-     */
-    function (seconds) { };
-    /**
-     * @param {...?} args
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.showMoreLoading = /**
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.setLoadingIndicatorDelay = function (seconds) { };
+    FullFeatureListPage.prototype.showMoreLoading = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
     };
-    /**
-     * @param {...?} args
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.hideMoreLoading = /**
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.hideMoreLoading = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
     };
-    /**
-     * @param {...?} args
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.showRefreshingIndicator = /**
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.showRefreshingIndicator = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
     };
-    /**
-     * @param {...?} args
-     * @return {?}
-     */
-    FullFeatureListPage.prototype.hideRefreshingIndicator = /**
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    FullFeatureListPage.prototype.hideRefreshingIndicator = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -439,24 +292,9 @@ FullFeatureListPage = /** @class */ (function (_super) {
     return FullFeatureListPage;
 }(PlatformObliviousListPage));
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 // Note that in the class, please avoid to depend on onNewItemsReady,
 // as it is NOT in the update flow.
-/**
- * @abstract
- * @template T
- */
-var  
-// Note that in the class, please avoid to depend on onNewItemsReady,
-// as it is NOT in the update flow.
-/**
- * @abstract
- * @template T
- */
-NgStoreBackedListPage = /** @class */ (function (_super) {
+var NgStoreBackedListPage = /** @class */ (function (_super) {
     __extends(NgStoreBackedListPage, _super);
     function NgStoreBackedListPage() {
         var _this = _super.call(this) || this;
@@ -471,68 +309,26 @@ NgStoreBackedListPage = /** @class */ (function (_super) {
         return _this;
     }
     // Override
-    // Override
-    /**
-     * @protected
-     * @param {?} fromCache
-     * @return {?}
-     */
-    NgStoreBackedListPage.prototype.turnOnMediator = 
-    // Override
-    /**
-     * @protected
-     * @param {?} fromCache
-     * @return {?}
-     */
-    function (fromCache) {
+    NgStoreBackedListPage.prototype.turnOnMediator = function (fromCache) {
         var _this = this;
         _super.prototype.turnOnMediator.call(this, fromCache);
-        /** @type {?} */
         var store = this.asNgStoreListMeidator.getNgStore();
         this._storeSubscription = store.getState().subscribe(function (data) {
-            /** @type {?} */
-            var w = (/** @type {?} */ (data.items));
+            var w = data.items;
             _this.items = w;
             // Note that we must call onItemsReady ... 
             _this.onItemsReady();
         });
     };
     // Override
-    // Override
-    /**
-     * @protected
-     * @return {?}
-     */
-    NgStoreBackedListPage.prototype.turnOffMediator = 
-    // Override
-    /**
-     * @protected
-     * @return {?}
-     */
-    function () {
+    NgStoreBackedListPage.prototype.turnOffMediator = function () {
         this._storeSubscription.unsubscribe();
         _super.prototype.turnOffMediator.call(this);
     };
     // Override
-    // Override
-    /**
-     * @protected
-     * @param {?} dataProvider
-     * @return {?}
-     */
-    NgStoreBackedListPage.prototype.buildMediator = 
-    // Override
-    /**
-     * @protected
-     * @param {?} dataProvider
-     * @return {?}
-     */
-    function (dataProvider) {
-        /** @type {?} */
-        var ctorOptions = __assign({}, this.mediatorCtorOptions, { dataProvider: dataProvider });
-        /** @type {?} */
+    NgStoreBackedListPage.prototype.buildMediator = function (dataProvider) {
+        var ctorOptions = __assign(__assign({}, this.mediatorCtorOptions), { dataProvider: dataProvider });
         var s = new CollectionStore();
-        /** @type {?} */
         var m = new NgStoreListMediator(ctorOptions);
         m.setNgStore(s);
         this.listMediator = m;
@@ -540,126 +336,47 @@ NgStoreBackedListPage = /** @class */ (function (_super) {
         return Promise.resolve();
     };
     Object.defineProperty(NgStoreBackedListPage.prototype, "asNgStoreListMeidator", {
-        get: /**
-         * @protected
-         * @return {?}
-         */
-        function () {
-            /** @type {?} */
+        get: function () {
             var m = this.listMediator;
-            return (/** @type {?} */ (m));
+            return m;
         },
         enumerable: true,
         configurable: true
     });
-    /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    NgStoreBackedListPage.prototype.readMediatorFromCache = /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    function (key) {
+    NgStoreBackedListPage.prototype.readMediatorFromCache = function (key) {
         return this.mediatorCache.get(key, this.defaultLivePeriod);
     };
-    /**
-     * @protected
-     * @param {?} key
-     * @param {?} value
-     * @return {?}
-     */
-    NgStoreBackedListPage.prototype.writeMediatorIntoCache = /**
-     * @protected
-     * @param {?} key
-     * @param {?} value
-     * @return {?}
-     */
-    function (key, value) {
+    NgStoreBackedListPage.prototype.writeMediatorIntoCache = function (key, value) {
         this.mediatorCache.set(key, value, this.defaultLivePeriod, function (evt) {
             value.tearDown();
             return evt;
         });
     };
-    /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    NgStoreBackedListPage.prototype.addOnCacheExpireHandler = /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    function (key) {
+    NgStoreBackedListPage.prototype.addOnCacheExpireHandler = function (key) {
         this._onCacheExpireCallback = function (evt) {
             evt.preventDefault();
             return evt;
         };
         this.mediatorCache.addOnExpireHandler(key, this._onCacheExpireCallback);
     };
-    /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    NgStoreBackedListPage.prototype.removeOnCacheExpireHandler = /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    function (key) {
+    NgStoreBackedListPage.prototype.removeOnCacheExpireHandler = function (key) {
         this.mediatorCache.rmOnExpireHandler(key, this._onCacheExpireCallback);
         this._onCacheExpireCallback = null;
     };
     // Default implementation.
     // Override
     // Note that in the derived class we do NOT depend on it.
-    // Default implementation.
-    // Override
-    // Note that in the derived class we do NOT depend on it.
-    /**
-     * @param {?} items
-     * @return {?}
-     */
-    NgStoreBackedListPage.prototype.onNewItemsReady = 
-    // Default implementation.
-    // Override
-    // Note that in the derived class we do NOT depend on it.
-    /**
-     * @param {?} items
-     * @return {?}
-     */
-    function (items) {
+    NgStoreBackedListPage.prototype.onNewItemsReady = function (items) {
         return items;
     };
     return NgStoreBackedListPage;
 }(FullFeatureListPage));
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 // Note that we use ICollectionItem rather than IModelLike,
 // because we assume the least requirement for the input type.
 // Precisely, the only requirement is that the collection item has an
 // id field. 
-/**
- * @abstract
- * @template T
- */
-var  
-// Note that we use ICollectionItem rather than IModelLike,
-// because we assume the least requirement for the input type.
-// Precisely, the only requirement is that the collection item has an
-// id field. 
-/**
- * @abstract
- * @template T
- */
-BackboneBackedListPage = /** @class */ (function (_super) {
+var BackboneBackedListPage = /** @class */ (function (_super) {
     __extends(BackboneBackedListPage, _super);
     function BackboneBackedListPage() {
         var _this = _super.call(this) || this;
@@ -669,65 +386,26 @@ BackboneBackedListPage = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(BackboneBackedListPage.prototype, "asWritableListMediator", {
-        get: /**
-         * @protected
-         * @return {?}
-         */
-        function () {
-            /** @type {?} */
+        get: function () {
             var m = this.listMediator;
-            return (/** @type {?} */ (m));
+            return m;
         },
         enumerable: true,
         configurable: true
     });
     // Default implementation for using backbone
-    // Default implementation for using backbone
-    /**
-     * @protected
-     * @param {?} localDataProvider
-     * @param {?=} localOptions
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.useMediatorWithOnlyLocalDataProvider = 
-    // Default implementation for using backbone
-    /**
-     * @protected
-     * @param {?} localDataProvider
-     * @param {?=} localOptions
-     * @return {?}
-     */
-    function (localDataProvider, localOptions) {
-        /** @type {?} */
+    BackboneBackedListPage.prototype.useMediatorWithOnlyLocalDataProvider = function (localDataProvider, localOptions) {
         var ctorOptions = {
             dataProvider: localDataProvider,
             useModel: true,
             enableInfinite: true,
             enableRefresh: true
         };
-        /** @type {?} */
         var s = new WritableListMediator(ctorOptions);
         this.listMediator = s;
         this.listMediator.setUp();
     };
-    /**
-     * @protected
-     * @param {?} localDataProvider
-     * @param {?} globalDataProvider
-     * @param {?=} localOptions
-     * @param {?=} globalOptions
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.useMediatorWithGlobalDataProvider = /**
-     * @protected
-     * @param {?} localDataProvider
-     * @param {?} globalDataProvider
-     * @param {?=} localOptions
-     * @param {?=} globalOptions
-     * @return {?}
-     */
-    function (localDataProvider, globalDataProvider, localOptions, globalOptions) {
-        /** @type {?} */
+    BackboneBackedListPage.prototype.useMediatorWithGlobalDataProvider = function (localDataProvider, globalDataProvider, localOptions, globalOptions) {
         var mediator = new RxjsPoweredWritableListMediator({
             globalProvider: globalDataProvider,
             filterFlags: {
@@ -742,20 +420,7 @@ BackboneBackedListPage = /** @class */ (function (_super) {
         this.listMediator.setUp();
     };
     // Invoked after the new mediator is constructure 
-    // Invoked after the new mediator is constructure 
-    /**
-     * @protected
-     * @param {...?} args
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.postUseFreshMediator = 
-    // Invoked after the new mediator is constructure 
-    /**
-     * @protected
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    BackboneBackedListPage.prototype.postUseFreshMediator = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -764,20 +429,7 @@ BackboneBackedListPage = /** @class */ (function (_super) {
         this.afterMediatorOn();
     };
     // Invoked after the cached mediator is used 
-    // Invoked after the cached mediator is used 
-    /**
-     * @protected
-     * @param {...?} args
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.postUseCachedMediator = 
-    // Invoked after the cached mediator is used 
-    /**
-     * @protected
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    BackboneBackedListPage.prototype.postUseCachedMediator = function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -786,29 +438,15 @@ BackboneBackedListPage = /** @class */ (function (_super) {
         this.afterMediatorOn();
     };
     // Override to support cache
-    // Override to support cache
-    /**
-     * @protected
-     * @param {...?} args
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.ensureDataProvider = 
-    // Override to support cache
-    /**
-     * @protected
-     * @param {...?} args
-     * @return {?}
-     */
-    function () {
+    BackboneBackedListPage.prototype.ensureDataProvider = function () {
         var _this = this;
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
         if (this.mediatorCache) {
-            /** @type {?} */
             var cacheKey_1 = this.getCacheKey.apply(this, __spread(args));
-            /** @type {?} */
+            var inCache = false;
             var mediator = this.readMediatorFromCache(cacheKey_1);
             if (!mediator) { // Not in cache
                 this.buildMediator.apply(// Not in cache
@@ -820,6 +458,7 @@ BackboneBackedListPage = /** @class */ (function (_super) {
                 });
             }
             else { // In cache
+                inCache = true;
                 this.listMediator = mediator;
                 // Case 2:
                 this.postUseCachedMediator.apply(this, __spread(args));
@@ -833,73 +472,28 @@ BackboneBackedListPage = /** @class */ (function (_super) {
         }
     };
     // Override
-    // Override
-    /**
-     * @protected
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.afterMediatorOn = 
-    // Override
-    /**
-     * @protected
-     * @return {?}
-     */
-    function () {
+    BackboneBackedListPage.prototype.afterMediatorOn = function () {
         if (this.mediatorCache) {
             // In this case, we do not Provide any inputs 
-            /** @type {?} */
             var cacheKey = this.getCacheKey();
             this.addOnCacheExpireHandler(cacheKey);
         }
     };
     // Override
-    // Override
-    /**
-     * @protected
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.afterMediatorOff = 
-    // Override
-    /**
-     * @protected
-     * @return {?}
-     */
-    function () {
+    BackboneBackedListPage.prototype.afterMediatorOff = function () {
         if (this.mediatorCache) {
             // In this case, we do not Provide any inputs
-            /** @type {?} */
             var cacheKey = this.getCacheKey();
             this.removeOnCacheExpireHandler(cacheKey);
         }
     };
     // Default implementation
-    // Default implementation
-    /**
-     * @param {?} items
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.onNewItemsReady = 
-    // Default implementation
-    /**
-     * @param {?} items
-     * @return {?}
-     */
-    function (items) {
+    BackboneBackedListPage.prototype.onNewItemsReady = function (items) {
         pushArray(this.items, items);
         return items;
     };
     // Default implementation.
-    // Default implementation.
-    /**
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.onItemsReady = 
-    // Default implementation.
-    /**
-     * @return {?}
-     */
-    function () {
-        /** @type {?} */
+    BackboneBackedListPage.prototype.onItemsReady = function () {
         var viewData = this.asWritableListMediator.viewLevelData();
         // Get the data from the view level data 
         this.items = viewData.models.slice(0);
@@ -907,105 +501,43 @@ BackboneBackedListPage = /** @class */ (function (_super) {
     // Note that it is up to the caller to decide how to use the
     // cached value; we need to precisely tell where there is a value in the cache
     // for the corresponding key
-    // Note that it is up to the caller to decide how to use the
-    // cached value; we need to precisely tell where there is a value in the cache
-    // for the corresponding key
-    /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.readMediatorFromCache = 
-    // Note that it is up to the caller to decide how to use the
-    // cached value; we need to precisely tell where there is a value in the cache
-    // for the corresponding key
-    /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    function (key) {
+    BackboneBackedListPage.prototype.readMediatorFromCache = function (key) {
         return this.mediatorCache.get(key, this.defaultLivePeriod);
     };
-    /**
-     * @protected
-     * @param {?} key
-     * @param {?} mediator
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.writeMediatorIntoCache = /**
-     * @protected
-     * @param {?} key
-     * @param {?} mediator
-     * @return {?}
-     */
-    function (key, mediator) {
+    BackboneBackedListPage.prototype.writeMediatorIntoCache = function (key, mediator) {
         this.mediatorCache.set(key, mediator, this.defaultLivePeriod, function (evt) {
             mediator.tearDown();
             return evt;
         });
     };
-    /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.addOnCacheExpireHandler = /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    function (key) {
+    BackboneBackedListPage.prototype.addOnCacheExpireHandler = function (key) {
         this._onCacheExpireCallback = function (evt) {
             evt.preventDefault();
             return evt;
         };
         this.mediatorCache.addOnExpireHandler(key, this._onCacheExpireCallback);
     };
-    /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    BackboneBackedListPage.prototype.removeOnCacheExpireHandler = /**
-     * @protected
-     * @param {?} key
-     * @return {?}
-     */
-    function (key) {
+    BackboneBackedListPage.prototype.removeOnCacheExpireHandler = function (key) {
         this.mediatorCache.rmOnExpireHandler(key, this._onCacheExpireCallback);
         this._onCacheExpireCallback = null;
     };
     return BackboneBackedListPage;
 }(FullFeatureListPage));
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 var BackendSettings = /** @class */ (function () {
     function BackendSettings() {
     }
     return BackendSettings;
 }());
-/** @type {?} */
 var BACKEND_SETTINGS = new InjectionToken('Backend Settings');
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+/*
+ * Public API Surface of ngx-mvc
  */
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
-export { NgStoreBackedListPage, adaptAngularToController, PlatformObliviousListPage, BackboneBackedListPage, FullFeatureListPage, BackendSettings, BACKEND_SETTINGS };
-
+export { BACKEND_SETTINGS, BackboneBackedListPage, BackendSettings, FullFeatureListPage, NgStoreBackedListPage, PlatformObliviousListPage, adaptAngularToController };
 //# sourceMappingURL=polpware-ngx-mvc.js.map

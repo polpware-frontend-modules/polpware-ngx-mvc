@@ -9,7 +9,7 @@ export declare abstract class BackboneBackedListPage<T extends ICollectionItem> 
     items: T[];
     constructor();
     protected abstract getCacheKey(...args: any[]): string;
-    protected readonly asWritableListMediator: IWritableListMediatorPublic;
+    protected get asWritableListMediator(): IWritableListMediatorPublic;
     protected useMediatorWithOnlyLocalDataProvider(localDataProvider: any, localOptions?: object): void;
     protected useMediatorWithGlobalDataProvider(localDataProvider: any, globalDataProvider: any, localOptions?: object, globalOptions?: object): void;
     protected postUseFreshMediator(...args: any[]): void;

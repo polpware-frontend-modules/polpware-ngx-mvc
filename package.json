@@ -1,9 +1,9 @@
 {
   "name": "@polpware/ngx-mvc",
-  "version": "7.0.0",
+  "version": "9.0.0",
   "peerDependencies": {
-    "@angular/common": "^7.2.0",
-    "@angular/core": "^7.2.0",
+    "@angular/common": "^9.0.0",
+    "@angular/core": "^9.0.0",
     "@polpware/fe-dependencies": "https://github.com/polpware-frontend-modules/polpware-fe-dependencies.git",
     "@polpware/fe-mvc": "https://github.com/polpware-frontend-modules/polpware-fe-mvc.git",
     "@polpware/fe-utilities": "https://github.com/polpware-frontend-modules/polpware-fe-utilities.git"
@@ -16,9 +16,11 @@
   "fesm5": "fesm5/polpware-ngx-mvc.js",
   "fesm2015": "fesm2015/polpware-ngx-mvc.js",
   "typings": "polpware-ngx-mvc.d.ts",
-  "metadata": "polpware-ngx-mvc.metadata.json",
   "sideEffects": false,
   "dependencies": {
-    "tslib": "^1.9.0"
+    "tslib": "^1.10.0"
+  },
+  "scripts": {
+    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\nPlease delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n')\" && exit 1"
   }
 }

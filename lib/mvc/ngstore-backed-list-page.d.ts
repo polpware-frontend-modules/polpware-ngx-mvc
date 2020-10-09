@@ -14,7 +14,7 @@ export declare abstract class NgStoreBackedListPage<T extends ICollectionItem> e
     protected turnOnMediator(fromCache: boolean): void;
     protected turnOffMediator(): void;
     protected buildMediator(dataProvider: any): PromiseLike<void>;
-    protected readonly asNgStoreListMeidator: INgStoreListMediatorPublic;
+    protected get asNgStoreListMeidator(): INgStoreListMediatorPublic;
     protected readMediatorFromCache(key: string): INgStoreListMediatorPublic;
     protected writeMediatorIntoCache(key: string, value: INgStoreListMediatorPublic): void;
     protected addOnCacheExpireHandler(key: string): void;
