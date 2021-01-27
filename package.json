@@ -1,12 +1,10 @@
 {
   "name": "@polpware/ngx-mvc",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",
-    "@polpware/fe-dependencies": "https://github.com/polpware-frontend-modules/polpware-fe-dependencies.git",
-    "@polpware/fe-mvc": "https://github.com/polpware-frontend-modules/polpware-fe-mvc.git",
-    "@polpware/fe-utilities": "https://github.com/polpware-frontend-modules/polpware-fe-utilities.git"
+    "@polpware/fe-mvc": "^9.0.0"
   },
   "main": "bundles/polpware-ngx-mvc.umd.js",
   "module": "fesm5/polpware-ngx-mvc.js",
