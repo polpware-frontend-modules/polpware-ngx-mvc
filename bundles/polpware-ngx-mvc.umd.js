@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@polpware/fe-mvc'), require('@polpware/fe-data'), require('@polpware/fe-dependencies'), require('@polpware/fe-utilities'), require('@angular/core')) :
-    typeof define === 'function' && define.amd ? define('@polpware/ngx-mvc', ['exports', '@polpware/fe-mvc', '@polpware/fe-data', '@polpware/fe-dependencies', '@polpware/fe-utilities', '@angular/core'], factory) :
-    (global = global || self, factory((global.polpware = global.polpware || {}, global.polpware['ngx-mvc'] = {}), global.feMvc, global.feData, global.feDependencies, global.feUtilities, global.ng.core));
-}(this, (function (exports, feMvc, feData, feDependencies, feUtilities, core) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@polpware/fe-mvc'), require('@polpware/fe-data'), require('@polpware/fe-dependencies'), require('@polpware/fe-utilities'), require('@angular/core'), require('@angular/forms')) :
+    typeof define === 'function' && define.amd ? define('@polpware/ngx-mvc', ['exports', '@polpware/fe-mvc', '@polpware/fe-data', '@polpware/fe-dependencies', '@polpware/fe-utilities', '@angular/core', '@angular/forms'], factory) :
+    (global = global || self, factory((global.polpware = global.polpware || {}, global.polpware['ngx-mvc'] = {}), global.feMvc, global.feData, global.feDependencies, global.feUtilities, global.ng.core, global.ng.forms));
+}(this, (function (exports, feMvc, feData, feDependencies, feUtilities, core, forms) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -749,9 +749,430 @@
     }());
     var BACKEND_SETTINGS = new core.InjectionToken('Backend Settings');
 
+    var DefListBaseMediator = feMvc.RxjsPoweredWritableListMediator.extend({
+        /* Properties */
+        Properties: 'filter,keyword,pageSize',
+        /**
+         * Override
+         *
+         * @param settings
+         */
+        init: function (settings) {
+            var self = this;
+            self._super(settings);
+            self._filter = '';
+            // Init 
+            self._keyword = settings.keyword || '';
+            self._pageSize = settings.pageSize || 40;
+            self._fromCache = false;
+        },
+        /**
+         * Override
+         * Render data in
+         * @param asyncLoaded
+         */
+        renderData: function (asyncLoaded) {
+            var self = this;
+            self._super(asyncLoaded);
+        },
+        /**
+         * Override
+         * so that we can reload data even in the case of cache
+         * @param {} fromCache
+         */
+        startService: function (viewInstance, fromCache) {
+            var self = this;
+            self.attachView(viewInstance);
+            if (fromCache === true) {
+                self._fromCache = true;
+                self.renderData(true);
+            }
+            else {
+                self._fromCache = false;
+                // Enforce that keyword is ''
+                self.startServiceImpl();
+            }
+        },
+        /**
+         * Override
+         */
+        reComputeDataParams: function () {
+            var self = this;
+            // target
+            var state = self._dataProvider.state;
+            state.offset = 0;
+            state.keyword = self._keyword || '';
+        },
+        /**
+         * Override
+         */
+        loadInitData: function () {
+            var self = this;
+            self.reComputeDataParams();
+            return self._super();
+        }
+    });
+
+    var DefListBaseController = /** @class */ (function (_super) {
+        __extends(DefListBaseController, _super);
+        function DefListBaseController(_listSettings) {
+            var _this = 
+            // If we navigated to this page, we will have an item available as a nav param
+            _super.call(this) || this;
+            _this._listSettings = _listSettings;
+            _this.mediatorCache = _this.getGlobalCache();
+            return _this;
+        }
+        Object.defineProperty(DefListBaseController.prototype, "asDefListBaseMediator", {
+            get: function () {
+                return this.listMediator;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(DefListBaseController.prototype, "fromCache", {
+            /**
+             * Indicates whether the underlying medicator is built from the previous
+             * cache or not.
+             */
+            get: function () {
+                // Get the fromCache value ...
+                return this.listMediator ? this.asDefListBaseMediator._formCache : false;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(DefListBaseController.prototype, "inInitState", {
+            /**
+             * Indicates whether the underlying medicator is still in the init stage,
+             * I.e., the underlying mediator has not conducted any request or not.
+             */
+            get: function () {
+                return this.listMediator ? this.asDefListBaseMediator._isInit : true;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        DefListBaseController.prototype.getCacheKey = function () {
+            return this._listSettings.cacheKey;
+        };
+        /**
+         * Builds the underlying mediator
+         * @param keyword The parameter is passed all the way from the
+         * onDocumentReady method.
+         */
+        DefListBaseController.prototype.buildMediator = function (keyword) {
+            var backendService = this.getBackendService();
+            var backendProvider = backendService.backendProvider;
+            var globalDataProvider = null;
+            var reDBService = this.getRelationalDB();
+            var relDB = reDBService.get();
+            // Build collections
+            globalDataProvider = relDB.getTable(this._listSettings.tableName).dataProvider();
+            // Local data provider
+            // The parameter is the endpoint defined by backend.service
+            var Ctor = backendProvider.getEndPoint(this._listSettings.endpointName);
+            var localDataProvider = new Ctor();
+            this.touchLocalDataProvider(localDataProvider);
+            // Init data provider 
+            localDataProvider.state.pageSize = 40;
+            localDataProvider.state.keyword = keyword;
+            var filterOptions = globalDataProvider ? {
+                added: true,
+                removed: true,
+                updated: false
+            } : {
+                added: false,
+                removed: false,
+                updated: false
+            };
+            var ctorOptions = {
+                globalProvider: globalDataProvider,
+                filterFlags: filterOptions,
+                dataProvider: localDataProvider,
+                useModel: true,
+                keyword: keyword,
+                pageSize: 40,
+                enableInfinite: true,
+                enableRefresh: true
+            };
+            this.listMediator = this.invokeMediatorCtor(ctorOptions);
+            this.listMediator.setUp();
+            return Promise.resolve();
+        };
+        /**
+         * Provides a chance to invoke a derived mediator in the derived controller.
+         * @param options
+         */
+        DefListBaseController.prototype.invokeMediatorCtor = function (options) {
+            return new DefListBaseMediator(options);
+        };
+        /**
+         * Provides a chance to update the freshly generated data provider.
+         * E.g., we can use this method to update the endpoint url.
+         */
+        DefListBaseController.prototype.touchLocalDataProvider = function (dataProvider) {
+        };
+        return DefListBaseController;
+    }(BackboneBackedListPage));
+
+    var _c0 = ["searchControlElem"];
+    var DefListBaseComponent = /** @class */ (function (_super) {
+        __extends(DefListBaseComponent, _super);
+        function DefListBaseComponent(listSettings, _spinner, _toastr) {
+            var _this = _super.call(this, listSettings) || this;
+            _this._spinner = _spinner;
+            _this._toastr = _toastr;
+            _this.bottomOffset = 0;
+            _this.minHeight = 0;
+            _this.fixedHeight = 0;
+            _this.maxHeight = 0;
+            _this.topOffset = 0;
+            _this.containerClass = '';
+            _this.initHighlightId = '';
+            _this.onSelect = new core.EventEmitter();
+            // By default, search is enabled
+            _this.searchEnabled = true;
+            _this.searchControl = new forms.FormControl('');
+            return _this;
+        }
+        Object.defineProperty(DefListBaseComponent.prototype, "totalCount", {
+            // Compute the total number of records from the underlying mediator
+            // and further the data provider of the mediator.
+            get: function () {
+                return this.asDefListBaseMediator.dataProvider().state.totalRecords;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(DefListBaseComponent.prototype, "offset", {
+            // As above, compute the loaded number of records so far.
+            get: function () {
+                return this.asDefListBaseMediator.dataProvider().state.totalRecords;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(DefListBaseComponent.prototype, "spinnerName", {
+            get: function () {
+                return this._listSettings.spinnerName;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        DefListBaseComponent.prototype.ngOnInit = function () {
+            this._spinner.startToListenSpinner(this.spinnerName);
+            this.onDocumentReady();
+            this.startObserveSearchKeyword();
+        };
+        DefListBaseComponent.prototype.ngOnDestroy = function () {
+            this._spinner.stopListener(this.spinnerName);
+            this.onDocumentDestroy();
+            this.stopObserveSearchKeyword();
+        };
+        ////////////////////////////////////////////////////////////////////////////////
+        // Overrides to tweak the behaviors of the loading/unloading logic
+        ////////////////////////////////////////////////////////////////////////////////
+        /**
+         * Following building a mediator or retrieving a mediator from cache,
+         * this method turns on the mediator to trigger network request.
+         *
+         * @param fromCache
+         * @param keyword The parameters from the second one are passed all the way from the
+         * onDocumentReady method.
+         */
+        DefListBaseComponent.prototype.turnOnMediator = function (fromCache, keyword) {
+            _super.prototype.turnOnMediator.call(this, fromCache, keyword);
+            // TODO: Check if we need the following logic?
+            // if (this.searchEnabled) {
+            //     // Synchronizing the UI and the internal state
+            //     const keyword = this.asDefListBaseMediator.keyword();
+            //     if (keyword) {
+            //         keyword = keyword.toLowerCase();
+            //         this.searchControl.setValue(keyword, {
+            //             emitEvent: false
+            //         });
+            //     }
+            // }
+        };
+        ////////////////////////////////////////////////////////////////////////////////
+        // Indicators
+        ////////////////////////////////////////////////////////////////////////////////
+        // Override
+        DefListBaseComponent.prototype.showLoadingIndicator = function () {
+            this._spinner.show('Loading ...', this.spinnerName);
+        };
+        DefListBaseComponent.prototype.hideLoadingIndicator = function () {
+            this._spinner.hide(this.spinnerName);
+        };
+        // Override
+        DefListBaseComponent.prototype.showMoreLoading = function () {
+            this._spinner.show('Loading ...', this.spinnerName);
+        };
+        // Override
+        DefListBaseComponent.prototype.hideMoreLoading = function () {
+            this._spinner.hide(this.spinnerName);
+        };
+        // Override
+        DefListBaseComponent.prototype.showRefreshingIndicator = function () {
+            this._spinner.show('Loading ...', this.spinnerName);
+        };
+        // Override
+        DefListBaseComponent.prototype.hideRefreshingIndicator = function () {
+            this._spinner.hide(this.spinnerName);
+            // Release a message 
+            this._toastr.success("List was just refreshed.", 'Success', {
+                closeButton: true
+            });
+        };
+        ////////////////////////////////////////////////////////////////////////////////
+        // Search state machine
+        ////////////////////////////////////////////////////////////////////////////////
+        // Start to listen for search keyword change
+        DefListBaseComponent.prototype.startObserveSearchKeyword = function () {
+            var _this = this;
+            this._searchKeywordSubr = this.searchControl.valueChanges.subscribe(function (a) {
+                a = (a || '').toLowerCase();
+                if (a && a !== _this.keywordInEffect) {
+                    _this.anyFutureKeyword = a;
+                }
+                else {
+                    _this.anyFutureKeyword = '';
+                }
+            });
+        };
+        DefListBaseComponent.prototype.stopObserveSearchKeyword = function () {
+            this._searchKeywordSubr && this._searchKeywordSubr.unsubscribe();
+        };
+        // Recomputes the search state
+        //
+        // 
+        DefListBaseComponent.prototype.computeSearchState = function () {
+            this.anyFutureKeyword = '';
+            this.keywordInEffectState = false;
+            this.typeKeywordState = false;
+            this.waitForInputState = false;
+            var keyword = this.asDefListBaseMediator.keyword();
+            if (keyword) {
+                keyword = keyword.toLowerCase();
+                this.keywordInEffect = keyword;
+                this.keywordInEffectState = true;
+                // Make sure that the search input has the latest value
+                var rhs = this.searchControl.value || '';
+                rhs = rhs.toLowerCase();
+                if (rhs !== keyword) {
+                    this.searchControl.setValue(keyword, {
+                        emitEvent: false
+                    });
+                }
+            }
+            else {
+                this.waitForInputState = true;
+                // Make sure that the search input has the latest value
+                var rhs = this.searchControl.value || '';
+                rhs = rhs.toLowerCase();
+                if (rhs) {
+                    this.searchControl.setValue('', {
+                        emitEvent: false
+                    });
+                }
+            }
+        };
+        // Swtiches to the state for providing
+        // the search input control for end users.
+        // 
+        DefListBaseComponent.prototype.startToTypeKeyword = function () {
+            this.anyFutureKeyword = '';
+            this.waitForInputState = false;
+            this.keywordInEffectState = false;
+            this.typeKeywordState = true;
+            // Schedule focus behavior in next round of UI updating,
+            // in order that the above settings are already in effect.
+            setTimeout(function () {
+                // TODO: Fix this
+                // this.focusFolderSearchInput();
+            });
+        };
+        // Cancel typed keyword and
+        // reset to whatever the previous state
+        //
+        // This operation does not cause new network request.
+        DefListBaseComponent.prototype.cancelTypedKeyword = function () {
+            this.computeSearchState();
+            // Auto focus the search input
+            this.searchControlElem.nativeElement.focus();
+        };
+        // Clear up keyword
+        //
+        // This operation causes new network request.
+        DefListBaseComponent.prototype.clearKeywordInEffect = function () {
+            this.asDefListBaseMediator.keyword('');
+            this.asDefListBaseMediator.refresh(true);
+            // Auto focus the search input
+            this.searchControlElem.nativeElement.focus();
+        };
+        // Starts a new round of search
+        //
+        // This operation causes new network request.
+        DefListBaseComponent.prototype.kickOffSearch = function () {
+            var k = this.searchControl.value;
+            // TODO: Normalize into lowercase ?
+            var currentKeyword = this.asDefListBaseMediator.keyword;
+            if (k === currentKeyword) {
+                // Nothing to do;
+                this.computeSearchState();
+                return;
+            }
+            // Otherwise, move forward to search 
+            this.asDefListBaseMediator.keyword(k);
+            this.asDefListBaseMediator.refresh(true);
+        };
+        // Override
+        //
+        // The extra operation allows for synchronizing the internal state
+        // with the user interface.
+        DefListBaseComponent.prototype.onItemsReady = function () {
+            _super.prototype.onItemsReady.call(this);
+            this.computeSearchState();
+            if (this.initHighlightId) {
+                this.highlight(this.initHighlightId);
+            }
+        };
+        /**
+          * Sends a notification back to its parent or client.
+          * @param item A data entity.
+          */
+        DefListBaseComponent.prototype.selectItem = function (item) {
+            this.initHighlightId = null;
+            this.selected = item;
+            this.onSelect.emit(item);
+        };
+        /**
+         * Allows the client to highlight an item by Id.
+         * @param id
+         */
+        DefListBaseComponent.prototype.highlight = function (id) {
+            var item = this.items.find(function (a) { return a.id == id; });
+            if (item && this.selected !== item) {
+                this.selected = item;
+            }
+        };
+        /** @nocollapse */ DefListBaseComponent.ɵfac = function DefListBaseComponent_Factory(t) { core.ɵɵinvalidFactory(); };
+        /** @nocollapse */ DefListBaseComponent.ɵdir = core.ɵɵdefineDirective({ type: DefListBaseComponent, viewQuery: function DefListBaseComponent_Query(rf, ctx) { if (rf & 1) {
+                core.ɵɵviewQuery(_c0, true);
+            } if (rf & 2) {
+                var _t;
+                core.ɵɵqueryRefresh(_t = core.ɵɵloadQuery()) && (ctx.searchControlElem = _t.first);
+            } }, inputs: { bottomOffset: "bottomOffset", minHeight: "minHeight", fixedHeight: "fixedHeight", maxHeight: "maxHeight", topOffset: "topOffset", containerClass: "containerClass", initHighlightId: "initHighlightId" }, outputs: { onSelect: "onSelect" }, features: [core.ɵɵInheritDefinitionFeature] });
+        return DefListBaseComponent;
+    }(DefListBaseController));
+
     exports.BACKEND_SETTINGS = BACKEND_SETTINGS;
     exports.BackboneBackedListPage = BackboneBackedListPage;
     exports.BackendSettings = BackendSettings;
+    exports.DefListBaseComponent = DefListBaseComponent;
+    exports.DefListBaseController = DefListBaseController;
+    exports.DefListBaseMediator = DefListBaseMediator;
     exports.FullFeatureListPage = FullFeatureListPage;
     exports.NgStoreBackedListPage = NgStoreBackedListPage;
     exports.PlatformObliviousListPage = PlatformObliviousListPage;

@@ -1,10 +1,11 @@
 {
   "name": "@polpware/ngx-mvc",
-  "version": "9.0.1",
+  "version": "9.1.0",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",
-    "@polpware/fe-mvc": "^9.0.0"
+    "@polpware/fe-mvc": "^9.0.0",
+    "@polpware/ngx-noty": "^9.0.0"
   },
   "main": "bundles/polpware-ngx-mvc.umd.js",
   "module": "fesm5/polpware-ngx-mvc.js",

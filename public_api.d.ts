@@ -6,3 +6,6 @@ export * from "./lib/mvc/backbone-backed-list-page";
 export * from "./lib/mvc/full-feature-list-page";
 export * from "./lib/mvc/mediator-compatible-page.interface";
 export * from "./lib/services/backend-settings.service";
+export * from "./lib/pages/mediators/def-list-base.mediator";
+export * from "./lib/pages/controllers/def-list-base.controller";
+export * from "./lib/pages/components/def-list-base.component";
