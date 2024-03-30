@@ -1,7 +1,6 @@
 import { NgStoreListMediator, WritableListMediator, RxjsPoweredWritableListMediator } from '@polpware/fe-mvc';
 import { CollectionStore } from '@polpware/fe-data';
 import * as hInterface from '@polpware/fe-dependencies';
-import { pushArray } from '@polpware/fe-utilities';
 import * as i0 from '@angular/core';
 import { InjectionToken, EventEmitter, Directive, Input, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -414,14 +413,14 @@ class BackboneBackedListPage extends FullFeatureListPage {
     }
     // Default implementation
     onNewItemsReady(items) {
-        pushArray(this.items, items);
+        this.items = [...this.items, ...items];
         return items;
     }
     // Default implementation.
     onItemsReady() {
         const viewData = this.asWritableListMediator.viewLevelData();
         // Get the data from the view level data 
-        this.items = viewData.models.slice(0);
+        this.items = [...viewData.models.slice(0)];
     }
     // Note that it is up to the caller to decide how to use the
     // cached value; we need to precisely tell where there is a value in the cache
