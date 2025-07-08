@@ -1,27 +1,27 @@
 {
   "name": "@polpware/ngx-mvc",
-  "version": "13.0.1",
+  "version": "14.0.0",
   "dependencies": {
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^13.0.0",
-    "@angular/core": "^13.0.0",
-    "@polpware/fe-mvc": "^13.0.0",
-    "@polpware/ngx-noty": "^13.0.0"
+    "@angular/common": "^14.0.0",
+    "@angular/core": "^14.0.0",
+    "@polpware/fe-mvc": "^14.0.0",
+    "@polpware/ngx-noty": "^14.0.0"
   },
   "module": "fesm2015/polpware-ngx-mvc.mjs",
   "es2020": "fesm2020/polpware-ngx-mvc.mjs",
   "esm2020": "esm2020/polpware-ngx-mvc.mjs",
   "fesm2020": "fesm2020/polpware-ngx-mvc.mjs",
   "fesm2015": "fesm2015/polpware-ngx-mvc.mjs",
-  "typings": "polpware-ngx-mvc.d.ts",
+  "typings": "index.d.ts",
   "exports": {
     "./package.json": {
       "default": "./package.json"
     },
     ".": {
-      "types": "./polpware-ngx-mvc.d.ts",
+      "types": "./index.d.ts",
       "esm2020": "./esm2020/polpware-ngx-mvc.mjs",
       "es2020": "./fesm2020/polpware-ngx-mvc.mjs",
       "es2015": "./fesm2015/polpware-ngx-mvc.mjs",

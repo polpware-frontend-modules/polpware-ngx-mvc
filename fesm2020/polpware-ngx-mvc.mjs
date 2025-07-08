@@ -3,7 +3,7 @@ import { CollectionStore } from '@polpware/fe-data';
 import * as hInterface from '@polpware/fe-dependencies';
 import * as i0 from '@angular/core';
 import { InjectionToken, EventEmitter, Directive, Input, Output, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 /**
  * @fileOverview
@@ -622,7 +622,7 @@ class DefListBaseComponent extends DefListBaseController {
         this.onSelect = new EventEmitter();
         // By default, search is enabled
         this.searchEnabled = true;
-        this.searchControl = new FormControl('');
+        this.searchControl = new UntypedFormControl('');
     }
     // Compute the total number of records from the underlying mediator
     // and further the data provider of the mediator.

@@ -1,5 +1,5 @@
 import { ElementRef, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ICollectionItem } from '@polpware/fe-data';
 import { INgxNoty } from '@polpware/ngx-noty';
 import { DefListBaseController, IDefListBaseControllerSettings } from '../controllers/def-list-base.controller';
@@ -30,7 +30,7 @@ export declare abstract class DefListBaseComponent<T extends ICollectionItem> ex
     typeKeywordState: boolean;
     keywordInEffect: string;
     keywordInEffectState: boolean;
-    searchControl: FormControl;
+    searchControl: UntypedFormControl;
     anyFutureKeyword: string;
     selected: T;
     private _searchKeywordSubr;
@@ -74,5 +74,5 @@ export declare abstract class DefListBaseComponent<T extends ICollectionItem> ex
      */
     highlight(id: string): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<DefListBaseComponent<any>, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DefListBaseComponent<any>, never, never, { "bottomOffset": "bottomOffset"; "minHeight": "minHeight"; "fixedHeight": "fixedHeight"; "maxHeight": "maxHeight"; "topOffset": "topOffset"; "containerClass": "containerClass"; "initHighlightId": "initHighlightId"; }, { "onSelect": "onSelect"; }, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DefListBaseComponent<any>, never, never, { "bottomOffset": "bottomOffset"; "minHeight": "minHeight"; "fixedHeight": "fixedHeight"; "maxHeight": "maxHeight"; "topOffset": "topOffset"; "containerClass": "containerClass"; "initHighlightId": "initHighlightId"; }, { "onSelect": "onSelect"; }, never, never, false>;
 }
