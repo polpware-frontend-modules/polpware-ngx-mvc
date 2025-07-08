@@ -2,7 +2,7 @@ import { NgStoreListMediator, WritableListMediator, RxjsPoweredWritableListMedia
 import { CollectionStore } from '@polpware/fe-data';
 import * as hInterface from '@polpware/fe-dependencies';
 import * as i0 from '@angular/core';
-import { InjectionToken, EventEmitter, Directive, Input, Output, ViewChild } from '@angular/core';
+import { InjectionToken, EventEmitter, Directive, ViewChild, Output, Input } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 /**
@@ -841,9 +841,9 @@ class DefListBaseComponent extends DefListBaseController {
             i0.ɵɵqueryRefresh(_t = i0.ɵɵloadQuery()) && (ctx.searchControlElem = _t.first);
         } }, inputs: { bottomOffset: "bottomOffset", minHeight: "minHeight", fixedHeight: "fixedHeight", maxHeight: "maxHeight", topOffset: "topOffset", containerClass: "containerClass", initHighlightId: "initHighlightId" }, outputs: { onSelect: "onSelect" }, features: [i0.ɵɵInheritDefinitionFeature] }); }
 }
-(function () { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(DefListBaseComponent, [{
+(() => { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(DefListBaseComponent, [{
         type: Directive
-    }], function () { return [{ type: undefined }, { type: undefined }, { type: undefined }]; }, { bottomOffset: [{
+    }], () => [{ type: undefined }, { type: undefined }, { type: undefined }], { bottomOffset: [{
             type: Input
         }], minHeight: [{
             type: Input

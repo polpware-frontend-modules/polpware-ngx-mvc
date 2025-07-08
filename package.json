@@ -1,14 +1,14 @@
 {
   "name": "@polpware/ngx-mvc",
-  "version": "16.0.0",
+  "version": "17.0.0",
   "dependencies": {
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^16.0.0",
-    "@angular/core": "^16.0.0",
-    "@polpware/fe-mvc": "^16.0.0",
-    "@polpware/ngx-noty": "^16.0.0"
+    "@angular/common": "^17.0.0",
+    "@angular/core": "^17.0.0",
+    "@polpware/fe-mvc": "^17.0.0",
+    "@polpware/ngx-noty": "^17.0.0"
   },
   "module": "fesm2022/polpware-ngx-mvc.mjs",
   "typings": "index.d.ts",
