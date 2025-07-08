@@ -74,5 +74,5 @@ export declare abstract class DefListBaseComponent<T extends ICollectionItem> ex
      */
     highlight(id: string): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<DefListBaseComponent<any>, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DefListBaseComponent<any>, never, never, { "bottomOffset": "bottomOffset"; "minHeight": "minHeight"; "fixedHeight": "fixedHeight"; "maxHeight": "maxHeight"; "topOffset": "topOffset"; "containerClass": "containerClass"; "initHighlightId": "initHighlightId"; }, { "onSelect": "onSelect"; }, never, never, false>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DefListBaseComponent<any>, never, never, { "bottomOffset": "bottomOffset"; "minHeight": "minHeight"; "fixedHeight": "fixedHeight"; "maxHeight": "maxHeight"; "topOffset": "topOffset"; "containerClass": "containerClass"; "initHighlightId": "initHighlightId"; }, { "onSelect": "onSelect"; }, never, never, false, never>;
 }
