@@ -228,7 +228,7 @@ export class DefListBaseComponent extends DefListBaseController {
             this.selected = item;
         }
     }
-    /** @nocollapse */ static { this.ɵfac = function DefListBaseComponent_Factory(t) { i0.ɵɵinvalidFactory(); }; }
+    /** @nocollapse */ static { this.ɵfac = function DefListBaseComponent_Factory(__ngFactoryType__) { i0.ɵɵinvalidFactory(); }; }
     /** @nocollapse */ static { this.ɵdir = /** @pureOrBreakMyCode */ i0.ɵɵdefineDirective({ type: DefListBaseComponent, viewQuery: function DefListBaseComponent_Query(rf, ctx) { if (rf & 1) {
             i0.ɵɵviewQuery(_c0, 5);
         } if (rf & 2) {
