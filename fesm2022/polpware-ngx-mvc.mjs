@@ -1,6 +1,6 @@
 import { NgStoreListMediator, WritableListMediator, RxjsPoweredWritableListMediator } from '@polpware/fe-mvc';
 import { CollectionStore } from '@polpware/fe-data';
-import * as hInterface from '@polpware/fe-dependencies';
+import { legacyLibs } from '@polpware/amd-bridge';
 import * as i0 from '@angular/core';
 import { InjectionToken, EventEmitter, Directive, ViewChild, Output, Input } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
@@ -19,8 +19,6 @@ import { UntypedFormControl } from '@angular/forms';
  * @author Xiaolong Tang <xxlongtang@gmail.com>
  * @license Copyright @me
  */
-// By default, we do not listen to any change ..
-const _$1 = hInterface.underscore;
 class PlatformObliviousListPage {
     constructor() {
         this.moreDataCanBeLoaded = false;
@@ -38,7 +36,7 @@ class PlatformObliviousListPage {
     }
 }
 
-const _ = hInterface.underscore;
+const _ = legacyLibs._;
 const noop = _.noop;
 function adaptAngularToController(context) {
     return {
