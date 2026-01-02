@@ -29,7 +29,7 @@ export declare abstract class DefListBaseController<T extends ICollectionItem> e
      * @param keyword The parameter is passed all the way from the
      * onDocumentReady method.
      */
-    protected buildMediator(keyword: string): PromiseLike<void>;
+    protected buildMediator(keyword: string): Promise<void>;
     /**
      * Provides a chance to invoke a derived mediator in the derived controller.
      * @param options

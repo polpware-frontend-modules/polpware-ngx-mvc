@@ -211,7 +211,7 @@ class FullFeatureListPage extends PlatformObliviousListPage {
     }
     // May be not needed. 
     onDataProviderReady(dataProvider) {
-        this.buildMediator(dataProvider).then(() => {
+        return this.buildMediator(dataProvider).then(() => {
             this.turnOnMediator(false);
             this.afterMediatorOn();
         });
@@ -376,7 +376,7 @@ class BackboneBackedListPage extends FullFeatureListPage {
             let inCache = false;
             const mediator = this.readMediatorFromCache(cacheKey);
             if (!mediator) { // Not in cache
-                this.buildMediator(...args).then(() => {
+                return this.buildMediator(...args).then(() => {
                     // set up in the cache
                     this.writeMediatorIntoCache(cacheKey, this.asWritableListMediator);
                     // case 1:
@@ -388,10 +388,11 @@ class BackboneBackedListPage extends FullFeatureListPage {
                 this.listMediator = mediator;
                 // Case 2:
                 this.postUseCachedMediator(...args);
+                return Promise.resolve();
             }
         }
         else {
-            this.buildMediator(...args).then(() => {
+            return this.buildMediator(...args).then(() => {
                 // Case 3: 
                 this.postUseFreshMediator(false, ...args);
             });

@@ -25,7 +25,7 @@ export declare abstract class PlatformObliviousListPage implements IMediatorComp
     protected listMediator: IListMediatorPublic;
     constructor();
     protected abstract buildViewInstance(): IViewInstance;
-    protected abstract buildMediator(...args: any[]): PromiseLike<void>;
+    protected abstract buildMediator(...args: any[]): Promise<void>;
     protected turnOnMediator(fromCache: boolean, ...rest: any[]): void;
     protected turnOffMediator(): void;
     abstract showLoadingIndicator(...args: Array<any>): void;

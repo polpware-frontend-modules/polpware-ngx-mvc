@@ -14,7 +14,7 @@ export declare abstract class BackboneBackedListPage<T extends ICollectionItem> 
     protected useMediatorWithGlobalDataProvider(localDataProvider: any, globalDataProvider: any, localOptions?: object, globalOptions?: object): void;
     protected postUseFreshMediator(...args: any[]): void;
     protected postUseCachedMediator(...args: any[]): void;
-    protected ensureDataProvider(...args: any[]): void;
+    protected ensureDataProvider(...args: any[]): Promise<void>;
     protected afterMediatorOn(): void;
     protected afterMediatorOff(): void;
     onNewItemsReady(items: Array<any>): Array<any>;

@@ -8,14 +8,14 @@ export interface IPageLifeCycle {
 export declare abstract class FullFeatureListPage extends PlatformObliviousListPage implements IPageLifeCycle {
     onDocumentReady(...args: Array<any>): void;
     onDocumentDestroy(...args: Array<any>): void;
-    protected abstract ensureDataProvider(...args: Array<any>): void;
+    protected abstract ensureDataProvider(...args: Array<any>): Promise<void>;
     protected abstract afterMediatorOn(): void;
     protected abstract afterMediatorOff(): void;
     protected abstract readMediatorFromCache(key: string): IListMediatorPublic;
     protected abstract writeMediatorIntoCache(key: string, value: IListMediatorPublic): void;
     protected abstract addOnCacheExpireHandler(key: string): void;
     protected abstract removeOnCacheExpireHandler(key: string): void;
-    protected onDataProviderReady(dataProvider: any): void;
+    protected onDataProviderReady(dataProvider: any): Promise<void>;
     protected buildViewInstance(): IViewInstance;
     doRefresh(): void;
     doInfinite(): void;
