@@ -59,7 +59,7 @@ declare abstract class PlatformObliviousListPage implements IMediatorCompatibleP
     protected listMediator: IListMediatorPublic;
     constructor();
     protected abstract buildViewInstance(): IViewInstance;
-    protected abstract buildMediator(...args: any[]): PromiseLike<void>;
+    protected abstract buildMediator(...args: any[]): Promise<void>;
     protected turnOnMediator(fromCache: boolean, ...rest: any[]): void;
     protected turnOffMediator(): void;
     abstract showLoadingIndicator(...args: Array<any>): void;
@@ -80,14 +80,14 @@ interface IPageLifeCycle {
 declare abstract class FullFeatureListPage extends PlatformObliviousListPage implements IPageLifeCycle {
     onDocumentReady(...args: Array<any>): void;
     onDocumentDestroy(...args: Array<any>): void;
-    protected abstract ensureDataProvider(...args: Array<any>): void;
+    protected abstract ensureDataProvider(...args: Array<any>): Promise<void>;
     protected abstract afterMediatorOn(): void;
     protected abstract afterMediatorOff(): void;
     protected abstract readMediatorFromCache(key: string): IListMediatorPublic;
     protected abstract writeMediatorIntoCache(key: string, value: IListMediatorPublic): void;
     protected abstract addOnCacheExpireHandler(key: string): void;
     protected abstract removeOnCacheExpireHandler(key: string): void;
-    protected onDataProviderReady(dataProvider: any): void;
+    protected onDataProviderReady(dataProvider: any): Promise<void>;
     protected buildViewInstance(): IViewInstance;
     doRefresh(): void;
     doInfinite(): void;
@@ -110,7 +110,7 @@ declare abstract class NgStoreBackedListPage<T extends ICollectionItem> extends 
     constructor();
     protected turnOnMediator(fromCache: boolean): void;
     protected turnOffMediator(): void;
-    protected buildMediator(dataProvider: any): PromiseLike<void>;
+    protected buildMediator(dataProvider: any): Promise<void>;
     protected get asNgStoreListMeidator(): INgStoreListMediatorPublic;
     protected readMediatorFromCache(key: string): INgStoreListMediatorPublic;
     protected writeMediatorIntoCache(key: string, value: INgStoreListMediatorPublic): void;
@@ -133,7 +133,7 @@ declare abstract class BackboneBackedListPage<T extends ICollectionItem> extends
     protected useMediatorWithGlobalDataProvider(localDataProvider: any, globalDataProvider: any, localOptions?: object, globalOptions?: object): void;
     protected postUseFreshMediator(...args: any[]): void;
     protected postUseCachedMediator(...args: any[]): void;
-    protected ensureDataProvider(...args: any[]): void;
+    protected ensureDataProvider(...args: any[]): Promise<void>;
     protected afterMediatorOn(): void;
     protected afterMediatorOff(): void;
     onNewItemsReady(items: Array<any>): Array<any>;
@@ -215,7 +215,7 @@ declare abstract class DefListBaseController<T extends ICollectionItem> extends 
      * @param keyword The parameter is passed all the way from the
      * onDocumentReady method.
      */
-    protected buildMediator(keyword: string): PromiseLike<void>;
+    protected buildMediator(keyword: string): Promise<void>;
     /**
      * Provides a chance to invoke a derived mediator in the derived controller.
      * @param options
